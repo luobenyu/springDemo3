@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+<session-factory>
+	<property name="hibernate.connection.driver_class">
+		com.mysql.jdbc.Driver
+	</property>
+	<property name="hibernate.connection.url">
+		jdbc:mysql://localhost:3306/dbone?useUnicode=true&amp;characterEncoding=UTF-8
+	</property>
+	<property name="hibernate.connection.username">zp</property>
+	<property name="hibernate.connection.password">a</property>
+	<property name="hibernate.dialect">
+		org.hibernate.dialect.MySQL5Dialect
+	</property>
+
+	<!-- 3 sql -->
+	<property name="hibernate.show_sql">true</property>
+	<property name="hibernate.format_sql">true</property>
+
+	<!-- 4 语句ddl -->
+	<property name="hibernate.hbm2ddl.auto">update</property>
+
+	<!-- 5 取消bean校验 -->
+	<property name="javax.persistence.validation.mode">none</property>
+
+	<!-- 6 绑定session -->
+	<property name="hibernate.current_session_context_class">
+		thread
+	</property>
+
+
+	<!-- 添加映射 -->
+	<mapping resource="cn/tf/domain/User.hbm.xml" />
+
+
+</session-factory>
+</hibernate-configuration>
