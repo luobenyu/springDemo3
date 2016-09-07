@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- service -->
+	<bean id="accountService" class="cn.tf.service.impl.AccountServiceImpl">
+		<property name="accountDao" ref="accountDao"></property>
+	</bean>
+	<!-- dao -->
+	<bean id="accountDao" class="cn.tf.dao.impl.AccountDaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 1 配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/dbone"></property>
+		<property name="user" value="zp"></property>
+		<property name="password" value="a"></property>
+	</bean>
+	<!-- 事务管理器 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="DataSource"  ref="dataSource"></property>
+	</bean>
+	
+	<!-- 代理对象,用于生产事务的代理对象 -->
+	<bean id="accountServiceProxy"  class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager"  ref="txManager"></property>
+		<!-- 接口 -->
+		<property name="proxyInterfaces" value="cn.tf.service.AccountService"></property>
+		<!-- 目标类 -->
+		<property name="target" ref="accountService"></property>
+		<!-- 事务属性 -->
+		<property name="transactionAttributes">
+			<props>
+				<prop  key="transfer">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	
+</beans>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       					   http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- service -->
+	<bean id="accountService" class="cn.tf.service.impl.AccountServiceImpl">
+		<property name="accountDao" ref="accountDao"></property>
+	</bean>
+	<!-- dao -->
+	<bean id="accountDao" class="cn.tf.dao.impl.AccountDaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 1 配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/dbone"></property>
+		<property name="user" value="zp"></property>
+		<property name="password" value="a"></property>
+	</bean>
+</beans>

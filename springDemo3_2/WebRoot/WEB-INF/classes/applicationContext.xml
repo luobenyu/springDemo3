@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"> <!-- bean definitions here -->
+
+
+	<!-- service -->
+	<bean id="accountService" class="cn.tf.service.impl.AccountServiceImpl">
+		<property name="accountDao" ref="accountDao"></property>
+	</bean>
+	<!-- dao -->
+	<bean id="accountDao" class="cn.tf.dao.impl.AccountDaoImpl">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 1 配置数据源 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/dbone"></property>
+		<property name="user" value="zp"></property>
+		<property name="password" value="a"></property>
+	</bean>
+	
+	<!-- 事务管理器 -->
+	<bean  id="txManager"  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource"  ref="dataSource"></property>
+	</bean>
+	<!-- 使用注解 -->
+	<tx:annotation-driven  transaction-manager="txManager"/>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 基于xml的配置 -->
+	<!-- 配置事务详情 
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method> 确定事务详情配置
+					name : 确定方法名称
+						transfer 确定名称
+						add* 	add开头
+						*	任意
+					propagation 传播行为
+					isolation 隔离级别
+					read-only="false" 是否只读
+					rollback-for="" 指定异常回滚（-）
+					no-rollback-for="" 指定异常提交（+）
+				经典应用：开发中规定
+					<tx:method name="add*"/>
+					<tx:method name="update*"/>
+					<tx:method name="delete*"/>
+					<tx:method name="find*" read-only="true"/>
+			<tx:method name="transfer" propagation="REQUIRED" isolation="DEFAULT" read-only="false"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	aop，将通知应用 目标类
+	<aop:config>
+		<aop:pointcut expression="execution(* cn.tf.service..*.*(..))" id="myPointcut"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut"/>
+	</aop:config> -->
+	
+</beans>
